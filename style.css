@@ -481,3 +481,11 @@ h1 {
 .action label {
     padding: 6px 0;
 }
+
+.logs {
+  background: rgb(138 133 133 / 35%);
+  margin: 0 auto;
+  padding: 10px 25px;
+  max-height: 245px;
+  overflow-y: scroll;
+}
