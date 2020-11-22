@@ -21,10 +21,10 @@ const character = {
   damageHP: 100,
   elHP: $getElById('health-character'),
   elProgressbar: $getElById('progressbar-character'),
-  changeHP: changeHP,
-  renderHp: renderHp,
-  renderHPLife: renderHPLife,
-  renderProgressbarHP: renderProgressbarHP,
+  changeHP,
+  renderHp,
+  renderHPLife,
+  renderProgressbarHP,
 }
 
 const enemy = {
@@ -33,10 +33,10 @@ const enemy = {
   damageHP: 100,
   elHP: $getElById('health-enemy'),
   elProgressbar: $getElById('progressbar-enemy'),
-  changeHP: changeHP,
-  renderHp: renderHp,
-  renderHPLife: renderHPLife,
-  renderProgressbarHP: renderProgressbarHP,
+  changeHP,
+  renderHp,
+  renderHPLife,
+  renderProgressbarHP,
 }
 
 function setButtons(buttons) {
