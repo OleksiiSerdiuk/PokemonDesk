@@ -1,26 +1,16 @@
+// in progress
+import Pokemon from './assets/js/pokemon.js';
+
+import buttons from './assets/js/buttonsConfig.js';
+import clickCounter from './assets/js/clickCounter.js';
+import random from './assets/js/utils.js';
+
 function $getElById(id) {
   return document.getElementById(id);
 }
 
 const $conclusionLogs = document.querySelector('#logs');
 const $p = document.createElement('p');
-
-const buttonsConfig = [
-  {
-    btn: $getElById('btn-kick'),
-    damageBtn: 20,
-    countClick: 0,
-    returnCount: document.querySelector('#btn-kick .clicks-left span'),
-    maxClickBtn: 6,
-  },
-  {
-    btn: $getElById('btn-custom-hit'),
-    damageBtn: 50,
-    countClick: 0,
-    returnCount: document.querySelector('#btn-custom-hit .clicks-left span'),
-    maxClickBtn: 1,
-  }
-];
 
 const character = {
   name: 'Pikachu',
@@ -56,25 +46,12 @@ function setButtons(buttons) {
   }
 }
 
-function clickCounter(button) {
-  ++button.countClick;
-
-  if (button.countClick >= button.maxClickBtn) {
-    button.btn.disabled = true;
-  }
-  addCount(button);
-}
-
-function addCount(button) {
-  button.returnCount.innerText = `${button.maxClickBtn - button.countClick}`;
-}
-
 function init() {
   console.log('Start Game!');
 
   character.renderHp();
   enemy.renderHp();
-  setButtons(buttonsConfig);
+  setButtons(buttons);
 
   // If the logs are not defined, then it is hidden
   if($conclusionLogs.innerHTML.length === 0) {
@@ -115,10 +92,6 @@ function changeHP(count, person, buttons) {
   }
 
   this.renderHp();
-}
-
-function random(num = 20) {
-  return Math.ceil(Math.random() * num);
 }
 
 function generateLog(firstPerson, secondPerson) {
