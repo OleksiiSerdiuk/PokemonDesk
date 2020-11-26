@@ -3,15 +3,22 @@ function $getElById(id) {
 }
 
 const $conclusionLogs = document.querySelector('#logs');
+const $p = document.createElement('p');
 
 const buttonsConfig = [
   {
     btn: $getElById('btn-kick'),
     damageBtn: 20,
+    countClick: 0,
+    returnCount: document.querySelector('#btn-kick .clicks-left span'),
+    maxClickBtn: 6,
   },
   {
     btn: $getElById('btn-custom-hit'),
     damageBtn: 50,
+    countClick: 0,
+    returnCount: document.querySelector('#btn-custom-hit .clicks-left span'),
+    maxClickBtn: 1,
   }
 ];
 
@@ -44,8 +51,22 @@ function setButtons(buttons) {
     buttons[i].btn.addEventListener('click', function () {
       character.changeHP(random(buttons[i].damageBtn), buttons);
       enemy.changeHP(random(buttons[i].damageBtn), buttons);
+      clickCounter(buttons[i]);
     })
   }
+}
+
+function clickCounter(button) {
+  ++button.countClick;
+
+  if (button.countClick >= button.maxClickBtn) {
+    button.btn.disabled = true;
+  }
+  addCount(button);
+}
+
+function addCount(button) {
+  button.returnCount.innerText = `${button.maxClickBtn - button.countClick}`;
 }
 
 function init() {
@@ -62,7 +83,6 @@ function init() {
 }
 
 function renderHp() {
-  console.log('this.RenderHp', this);
   this.renderHPLife();
   this.renderProgressbarHP();
 }
@@ -103,7 +123,6 @@ function random(num = 20) {
 
 function generateLog(firstPerson, secondPerson) {
   let renderHP = `${firstPerson.defaultHP - firstPerson.damageHP}` + ' ' + `[${firstPerson.damageHP} / ${firstPerson.defaultHP}]`;
-  const $p = document.createElement('p');
 
   const logs = [
     `${firstPerson.name} вспомнил что-то важное, но неожиданно ${secondPerson.name}, не помня себя от испуга, ударил в предплечье врага. ${renderHP}`,
