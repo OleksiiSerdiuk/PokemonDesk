@@ -6,7 +6,7 @@ class Selectors {
 }
 
 class Pokemon extends Selectors {
-  constructor({ name, hp, type, selectors}) {
+  constructor({ name, hp, type, selectors, attacks = []}) {
       super(selectors);
 
       this.name = name;
@@ -15,14 +15,17 @@ class Pokemon extends Selectors {
         total: hp,
       };
       this.type = type;
+      this.attacks = attacks;
+
       this.renderHp();
   }
 
-  changeHP = (count, cb) => {
+  changeHP = (count, cb, reset) => {
     this.hp.current -= count;
 
     if(this.hp.current <= 0) {
       this.hp.current = 0;
+      alert(`Pokemon ${this.name} lost the fight`);
     }
 
     this.renderHp();
@@ -42,9 +45,6 @@ class Pokemon extends Selectors {
   renderProgressbarHP = () => {
     const { hp:{ current, total }, elProgressbar } = this;
     const procent = current / ( total / 100 );
-
-    console.log('this', elProgressbar);
-    console.log('procent', procent);
 
     elProgressbar.style.width = procent + '%';
   }
