@@ -1,128 +1,58 @@
+import Pokemon from './src/js/pokemon.js';
+import countBtn from './src/js/countBtn.js';
+import random from './src/js/utils.js';
+
+const player1 = new Pokemon({
+  name: 'Pikachu',
+  type: 'electric',
+  hp: 500,
+  selectors: 'character',
+})
+
+const player2 = new Pokemon({
+  name: 'Charmander',
+  type: 'fire',
+  hp: 450,
+  selectors: 'enemy',
+})
+
 function $getElById(id) {
   return document.getElementById(id);
 }
 
-const $conclusionLogs = document.querySelector('#logs');
-const $p = document.createElement('p');
+const $btn = $getElById('btn-kick');
+const $btn2 = $getElById('btn-custom-hit');
 
-const buttonsConfig = [
-  {
-    btn: $getElById('btn-kick'),
-    damageBtn: 20,
-    countClick: 0,
-    returnCount: document.querySelector('#btn-kick .clicks-left span'),
-    maxClickBtn: 6,
-  },
-  {
-    btn: $getElById('btn-custom-hit'),
-    damageBtn: 50,
-    countClick: 0,
-    returnCount: document.querySelector('#btn-custom-hit .clicks-left span'),
-    maxClickBtn: 1,
-  }
-];
+const btnCountThunder = countBtn(10, $btn);
+$btn.addEventListener('click', function () {
+  btnCountThunder();
+  player1.changeHP(random(20), function (count) {
+    console.log('Some change after change Hp', count);
+    console.log(generateLog(player1, player2, count));
+  });
+  player2.changeHP(random(20), function (count) {
+    console.log('Some change after change Hp', count);
+    generateLog(player1, player2, count);
+  });
+});
 
-const character = {
-  name: 'Pikachu',
-  defaultHP: 100,
-  damageHP: 100,
-  elHP: $getElById('health-character'),
-  elProgressbar: $getElById('progressbar-character'),
-  changeHP,
-  renderHp,
-  renderHPLife,
-  renderProgressbarHP,
-}
+const btnCountCustom = countBtn(5, $btn2);
+$btn2.addEventListener('click', function () {
+  btnCountCustom();
+  player1.changeHP(random(60, 20), function (count) {
+    console.log('Some change after change Hp', count);
+    console.log(generateLog(player1, player2, count));
+  });
+  player2.changeHP(random(60, 20), function (count) {
+    console.log('Some change after change Hp', count);
+    console.log(generateLog(player1, player2, count));
+  });
+});
 
-const enemy = {
-  name: 'Charmander',
-  defaultHP: 100,
-  damageHP: 100,
-  elHP: $getElById('health-enemy'),
-  elProgressbar: $getElById('progressbar-enemy'),
-  changeHP,
-  renderHp,
-  renderHPLife,
-  renderProgressbarHP,
-}
-
-function setButtons(buttons) {
-  for(let i = 0; i < buttons.length; i++) {
-    buttons[i].btn.addEventListener('click', function () {
-      character.changeHP(random(buttons[i].damageBtn), buttons);
-      enemy.changeHP(random(buttons[i].damageBtn), buttons);
-      clickCounter(buttons[i]);
-    })
-  }
-}
-
-function clickCounter(button) {
-  ++button.countClick;
-
-  if (button.countClick >= button.maxClickBtn) {
-    button.btn.disabled = true;
-  }
-  addCount(button);
-}
-
-function addCount(button) {
-  button.returnCount.innerText = `${button.maxClickBtn - button.countClick}`;
-}
-
-function init() {
-  console.log('Start Game!');
-
-  character.renderHp();
-  enemy.renderHp();
-  setButtons(buttonsConfig);
-
-  // If the logs are not defined, then it is hidden
-  if($conclusionLogs.innerHTML.length === 0) {
-    $conclusionLogs.style.display = 'none';
-  }
-}
-
-function renderHp() {
-  this.renderHPLife();
-  this.renderProgressbarHP();
-}
-
-function renderHPLife() {
-  this.elHP.innerText = this.damageHP + ' / ' + this.defaultHP;
-}
-
-function renderProgressbarHP() {
-  this.elProgressbar.style.width = this.damageHP + '%';
-}
-
-function changeHP(count, person, buttons) {
-  this.damageHP -= count;
-
-  const log = this === enemy ? generateLog(this, character) : generateLog(this, enemy);
-
-  // If the logs are defined, then it is visible
-  if(log) {
-    $conclusionLogs.style.display = 'block';
-  }
-
-  if(this.damageHP <= 0) {
-    this.damageHP = 0;
-    alert('Бедный '+ this.name + ' проиграл бой!');
-
-    for(let i = 0; i < buttons.length; i++) {
-      buttons[i].btn.disabled = true;
-    }
-  }
-
-  this.renderHp();
-}
-
-function random(num = 20) {
-  return Math.ceil(Math.random() * num);
-}
-
-function generateLog(firstPerson, secondPerson) {
-  let renderHP = `${firstPerson.defaultHP - firstPerson.damageHP}` + ' ' + `[${firstPerson.damageHP} / ${firstPerson.defaultHP}]`;
+function generateLog(firstPerson, secondPerson, count) {
+  let renderHP = `${firstPerson.hp.current - firstPerson.hp.total}` + ' ' + `${count}`;
+  const $conclusionLogs = document.querySelector('#logs');
+  const $p = document.createElement('p');
 
   const logs = [
     `${firstPerson.name} вспомнил что-то важное, но неожиданно ${secondPerson.name}, не помня себя от испуга, ударил в предплечье врага. ${renderHP}`,
@@ -141,5 +71,3 @@ function generateLog(firstPerson, secondPerson) {
 
   return $conclusionLogs.insertBefore($p, $conclusionLogs.children[0]);
 }
-
-init();
