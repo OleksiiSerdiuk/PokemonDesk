@@ -41,8 +41,7 @@ body {
     margin: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    grid-gap: 30px;
 }
 
 .playground {
@@ -273,13 +272,15 @@ body {
     border-radius: 10px;
     min-height: 30px;
     vertical-align: middle;
-    padding: 12px 20px;
+    padding: 0 10px;
     outline: none !important;
     cursor: pointer;
     font-size: 18px;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    height: 100%;
+    text-transform: capitalize;
 }
 
 .clicks-left {
@@ -496,4 +497,15 @@ h1 {
   padding: 10px 25px;
   max-height: 245px;
   overflow-y: scroll;
+}
+
+.wrapper-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto;
+}
+
+.reset {
+  grid-column: span 2;
+  margin: 20px;
 }
