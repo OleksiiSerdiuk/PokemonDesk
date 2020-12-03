@@ -1,8 +1,8 @@
-import Pokemon from './src/js/pokemon.js'
-import countBtn from './src/js/countBtn.js'
-import { random, generateLog } from './src/js/utils.js'
-import reset from './src/js/resetBtn.js';
-import Backend from './src/js/backend.js';
+import Pokemon from './js/pokemon.js'
+import countBtn from './js/countBtn.js'
+import { random, generateLog } from './js/utils.js'
+import reset from './js/resetBtn.js';
+import Backend from './js/backend.js';
 
 const backend = new Backend();
 const $control1 = document.querySelector('.control.player1');
